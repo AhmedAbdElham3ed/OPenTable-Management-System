@@ -1,0 +1,8 @@
+create or replace procedure get_max_resv_id_signed
+(max_id out NUMBER)
+as 
+begin 
+select max(RESERVATIONID)
+into max_id
+from SIGNEDRESERVATION;
+end;

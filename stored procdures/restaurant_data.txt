@@ -1,0 +1,5 @@
+create or replace procedure restaurant_data(res_name VARCHAR2,res_cusine out varchar2,mx_price out number,res_location out varchar2)
+as
+begin
+select cusine, maxprice,reslocation into res_cusine, mx_price, res_location from restaurant where resname= res_name;
+end;

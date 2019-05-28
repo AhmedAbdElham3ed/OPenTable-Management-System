@@ -1,0 +1,98 @@
+CREATE TABLE USERACCOUNT
+(
+  USEREMAIL VARCHAR2(50) NOT NULL,
+  user_PASSWORD VARCHAR2(50),
+  FIRSTNAME VARCHAR2(50),
+  LASTNAME VARCHAR2(50),
+  city VARCHAR2(50),
+  CONSTRAINT USERACCOUNT_PK PRIMARY KEY(USEREMAIL)
+  ENABLE
+)
+;
+CREATE TABLE RESTAURANT
+(
+  RESNAME VARCHAR2(80) NOT NULL,
+  RESSTREET VARCHAR2(50),
+  RESLOCATION VARCHAR2(50),
+  PHONE NUMBER(20, 0),
+  CUSINE VARCHAR2(50),
+  MINPRICE NUMBER(10, 0),
+  MAXPRICE NUMBER(10, 0),
+  MAXPARTY_SIZE NUMBER(10,0),
+  EXECTUTIVECHEF VARCHAR2(50)
+, CONSTRAINT RESTAURANT_PK PRIMARY KEY(RESNAME)
+ENABLE
+)
+;
+create table Admins
+(
+Email varchar2(50) NOT NULL, 
+admin_Password varchar2(50),
+resName varchar2(80) references Restaurant(ResName) ON Delete cascade,
+CONSTRAINT Admin_PK PRIMARY KEY(Email)
+Enable
+);
+create table Schedule
+(
+resName varchar2(80) references Restaurant(ResName) ON Delete cascade, 
+specificDate varchar2(50) NOT NULL,
+specificdateandtime date,
+NumofTables Number(10,0), 
+DiningPoints Number(10,0),
+CONSTRAINT Schedule_PK PRIMARY KEY (resName,specificdateandtime )
+);
+create table RateRestaurant
+(
+resName varchar2(80) references Restaurant(ResName) ON Delete cascade, 
+userEmail varchar2(50) references USERACCOUNT(USEREMAIL) ON Delete cascade,
+Review varchar2(500), 
+Rate real,
+CONSTRAINT Rate_PK PRIMARY KEY (resName,userEmail)
+);
+
+create table PaymentMethod
+(
+resName varchar2(80) references Restaurant(ResName) ON Delete cascade, 
+PaymentMethod varchar2(50) Not NULL,
+CONSTRAINT Payment_PK PRIMARY KEY (resName,PaymentMethod)
+);
+create table FoodCategory
+(
+resName varchar2(80) references Restaurant(ResName) ON Delete cascade,
+CategoryName varchar2(50) NOT NULL,
+FoodName varchar2(50) Not NULL,
+Description varchar2(100),
+price Number(10,0),
+CONSTRAINT FoodCategory_PK PRIMARY KEY (resName,CategoryName,FoodName)
+);
+create table SignedReservation
+(
+ReservationID  Number(10,0) NOT NULL,
+userEmail varchar2(50)  references USERACCOUNT(USEREMAIL) on Delete cascade,
+resName varchar2(80) NOT NULL,
+specificdateandtime date,
+Phone varchar2(50),
+Occasion varchar2(50),
+NumberofPeople Number(10,0),
+DiningPointsOption number(10,0),
+State varchar2(50),
+specificDate varchar2(50),
+CONSTRAINT Signed_PK PRIMARY KEY (ReservationID),
+FOREIGN KEY (resName, specificdateandtime) REFERENCES SCHEDULE(RESNAME,specificdateandtime) on delete cascade
+);
+ create table SignedOutReservation
+(
+ReservationID  Number(10,0) NOT NULL,
+userEmail varchar2(50),
+FirstName varchar2(50),
+LastName varchar2(50),
+resName varchar2(80) NOT NULL,
+specificdateandtime date,
+Phone varchar2(50),
+Occasion varchar2(50),
+NumberofPeople Number(10,0),
+State varchar2(50),
+specificDate varchar2(50),
+CONSTRAINT SignedOut_PK PRIMARY KEY (ReservationID),
+FOREIGN KEY (resName, specificdateandtime) REFERENCES SCHEDULE(RESNAME, specificdateandtime) on delete cascade
+); 

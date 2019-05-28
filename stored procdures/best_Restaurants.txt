@@ -1,0 +1,12 @@
+create or replace PROCEDURE best_Restaurants
+(num_p NUMBER  ,mn_price number,mx_price number,res_cuisine varchar2,res_name VARCHAR2,res_location varchar2, rows_out out sys_refcursor)
+as 
+begin 
+open rows_out for
+select restaurant.resname,round(avg(nvl(rate,0)),2),count(raterestaurant.resname) from restaurant,raterestaurant
+where restaurant.resname=raterestaurant.resname(+) and restaurant.maxparty_size>= num_p and restaurant.minprice>= mn_price and (restaurant.maxprice<= mx_price or mx_price=-1)
+and (lower(restaurant.reslocation)= lower(res_location) or res_location='no specifications') and (restaurant.cusine= res_cuisine or res_cuisine='no specifications')
+and (restaurant.resname= res_name or res_name='null')
+group by restaurant.resname
+order by sum(nvl(rate,0)) desc; 
+end;

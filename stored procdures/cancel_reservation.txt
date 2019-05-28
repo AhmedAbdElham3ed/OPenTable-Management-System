@@ -1,0 +1,6 @@
+create or replace procedure cancel_reservation(res_id number,res_name VARCHAR2,specific_date varchar2,specific_time VARCHAR2)
+as
+begin
+  update schedule set NUMOFTABLES= numoftables+1 where resname= res_name and specificdate= specific_date and specificdateandtime=to_date(specificdate || ' ' ||specific_time, 'mm/dd/yyyy hh24:mi') ;
+  DELETE from signedreservation where reservationid= res_id;
+end;

@@ -1,0 +1,18 @@
+create or replace procedure insert_into_res_admin_pay
+(res_name VARCHAR2 , street VARCHAR2 , res_location VARCHAR2 
+, phone NUMBER , cusine VARCHAR2 , minp NUMBER , maxp NUMBER , maxpartysize NUMBER
+, exe_chef VARCHAR2  -- end of resturant data 
+, admin_email VARCHAR2 , admin_pass VARCHAR2
+)
+is  
+begin 
+
+insert into restaurant
+values
+(res_name , street , res_location , phone , cusine , minp , maxp , maxpartysize , exe_chef);
+
+insert into admins
+values
+(admin_email , admin_pass , res_name);
+
+end;
